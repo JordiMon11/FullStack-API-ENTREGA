@@ -1,465 +1,302 @@
-# 🌍 Conflict Tracker API
+🌍 CONFLICT TRACKER API - GUÍA COMPLETA
+📖 ¿DE QUÉ VA ESTE PROYECTO?
+Conflict Tracker es una aplicación web que permite gestionar información sobre conflictos bélicos mundiales.
+Imagina que eres un analista político y necesitas llevar un registro de:
 
-API REST completa para la gestión de conflictos bélicos a nivel mundial, desarrollada con **Spring Boot 3** y **Java 17**.
+🌐 Conflictos armados (guerras, disputas territoriales)
+⚔️ Facciones o bandos que participan en cada conflicto
+📅 Eventos importantes que ocurren en cada conflicto
+🏳️ Países involucrados o que dan apoyo
 
-## 📋 Descripción
+Este proyecto te permite:
 
-Este proyecto implementa una API REST robusta que permite gestionar información sobre conflictos bélicos, incluyendo:
-- **Conflictos**: Información detallada sobre conflictos activos, congelados o finalizados
-- **Facciones**: Grupos o bandos involucrados en cada conflicto
-- **Eventos**: Acontecimientos clave dentro de cada conflicto
-- **Países**: Naciones involucradas o que dan soporte a las facciones
+✅ Crear, consultar, modificar y eliminar conflictos
+✅ Registrar qué países están involucrados
+✅ Añadir facciones y sus países de apoyo
+✅ Registrar eventos clave (batallas, acuerdos, etc.)
+✅ Consultar toda esta información desde una API REST o una interfaz web
 
-La aplicación sigue una **arquitectura por capas** con separación clara de responsabilidades y utiliza **DTOs** para desacoplar el modelo de datos de la API.
 
-## 🏗️ Arquitectura
+🏗️ ¿CÓMO FUNCIONA?
+La aplicación tiene DOS interfaces:
+1️⃣ API REST (para programadores)
+Puedes enviar peticiones HTTP para consultar o modificar datos.
+Ejemplo: "Dame todos los conflictos activos"
+bashcurl http://localhost:8080/api/v1/conflicts?status=ACTIVE
+2️⃣ Interfaz Web (para usuarios)
+Una página web visual donde puedes ver y crear conflictos.
+Acceso: http://localhost:8080/web/conflicts
 
-```
-src/main/java/com/example/conflicttracker/
-├── controller/          # Controladores REST y Web
-│   ├── ConflictController.java
-│   ├── FactionController.java
-│   ├── EventController.java
-│   ├── CountryController.java
-│   └── WebController.java
-├── service/            # Lógica de negocio
-│   ├── ConflictService.java
-│   ├── FactionService.java
-│   └── EventService.java
-├── repository/         # Acceso a datos (JPA)
-│   ├── ConflictRepository.java
-│   ├── FactionRepository.java
-│   ├── EventRepository.java
-│   └── CountryRepository.java
-├── model/             # Entidades JPA
-│   ├── Conflict.java
-│   ├── Faction.java
-│   ├── Event.java
-│   ├── Country.java
-│   └── ConflictStatus.java
-├── dto/               # Data Transfer Objects
-│   ├── ConflictDTO.java
-│   ├── ConflictCreateDTO.java
-│   ├── ConflictUpdateDTO.java
-│   ├── FactionDTO.java
-│   ├── FactionCreateDTO.java
-│   ├── EventDTO.java
-│   ├── EventCreateDTO.java
-│   └── CountryDTO.java
-└── mapper/            # Conversión Entity ↔ DTO
-    ├── ConflictMapper.java
-    ├── FactionMapper.java
-    └── EventMapper.java
-```
+La información se organiza así:
+CONFLICTO: "Guerra de Ucrania"
+├── Fecha de inicio: 24/02/2022
+├── Estado: ACTIVO
+├── Países involucrados: Ucrania, Rusia
+├── Facciones:
+│   ├── Fuerzas Armadas Ucranianas (apoyadas por: Ucrania, USA)
+│   └── Fuerzas Armadas Rusas (apoyadas por: Rusia)
+└── Eventos:
+    ├── 24/02/2022 - Kiev - Inicio de la invasión
+    └── 03/04/2022 - Bucha - Descubrimiento de víctimas civiles
 
-## 🚀 Tecnologías Utilizadas
+🚀 CÓMO HACER QUE FUNCIONE
+PASO 1: Requisitos Previos
+Necesitas tener instalado:
 
-- **Java 17**
-- **Spring Boot 3.2.0**
-- **Spring Data JPA** (Hibernate)
-- **Spring Web** (REST API)
-- **Spring Boot Thymeleaf** (Frontend)
-- **H2 Database** (Desarrollo)
-- **PostgreSQL** (Producción)
-- **Maven** (Gestión de dependencias)
-- **Bootstrap 5** (Estilos del frontend)
+☕ Java 17 (Descargar aquí)
+📦 Maven (o usar el que viene con tu IDE)
 
-## 📦 Requisitos Previos
+¿Cómo comprobar que tienes Java?
+bashjava -version
+Debe mostrar algo como: java version "17.0.x"
 
-- **Java 17** o superior
-- **Maven 3.6+** o superior
-- **PostgreSQL** (opcional, solo para producción)
+PASO 2: Descomprimir el Proyecto
 
-## ⚙️ Instalación y Configuración
+Descomprime el archivo conflict-tracker.zip
+Verás una carpeta llamada conflict-tracker/
+Esta carpeta contiene TODO el proyecto
 
-### 1. Clonar el repositorio
 
-```bash
-git clone https://github.com/JordiMon11/Entrega_actividad_api.git
-cd Entrega_actividad_api
-```
+PASO 3: Abrir en tu IDE
+Opción A: IntelliJ IDEA (Recomendado)
 
-### 2. Compilar el proyecto
+Abre IntelliJ IDEA
+File → Open
+Selecciona la carpeta conflict-tracker/
+Espera a que Maven descargue las dependencias (barra inferior)
+✅ Listo
 
-```bash
+Opción B: Eclipse
+
+Abre Eclipse
+File → Import → Maven → Existing Maven Projects
+Selecciona la carpeta conflict-tracker/
+✅ Listo
+
+Opción C: Visual Studio Code
+
+Abre VS Code
+File → Open Folder
+Selecciona la carpeta conflict-tracker/
+Instala la extensión "Extension Pack for Java" si te la pide
+✅ Listo
+
+
+PASO 4: Compilar el Proyecto
+Desde el IDE:
+
+IntelliJ: Click derecho en pom.xml → Maven → Reload Project
+Eclipse: Click derecho en proyecto → Maven → Update Project
+
+Desde la terminal:
+bashcd conflict-tracker
 mvn clean install
-```
+Deberías ver al final:
+[INFO] BUILD SUCCESS
 
-### 3. Ejecutar la aplicación
+PASO 5: Ejecutar la Aplicación
+Opción A: Desde el IDE
 
-```bash
-mvn spring-boot:run
-```
+Busca el archivo ConflictTrackerApplication.java
+Click derecho → Run 'ConflictTrackerApplication'
 
-La aplicación se iniciará en `http://localhost:8080`
+Opción B: Desde la terminal
+bashmvn spring-boot:run
+¿Cómo saber que funciona?
+Verás en la consola:
+Started ConflictTrackerApplication in X seconds
 
-### 4. Acceder a la consola H2 (opcional)
+PASO 6: Probar que Funciona
+🌐 Opción 1: Interfaz Web (más fácil)
 
-Durante el desarrollo, puedes acceder a la consola de H2:
-- URL: `http://localhost:8080/h2-console`
-- JDBC URL: `jdbc:h2:mem:conflictdb`
-- Username: `sa`
-- Password: (dejar vacío)
+Abre tu navegador
+Ve a: http://localhost:8080/web/conflicts
+Deberías ver una tabla con conflictos
 
-## 🎯 Uso de la API
+Puedes:
 
-### Endpoints de Conflictos
+Ver la lista de conflictos
+Crear un nuevo conflicto (botón "Nuevo Conflicto")
+Eliminar conflictos
 
-#### Obtener todos los conflictos
-```bash
-curl http://localhost:8080/api/v1/conflicts
-```
 
-#### Filtrar conflictos por estado
-```bash
-curl http://localhost:8080/api/v1/conflicts?status=ACTIVE
-```
-
-#### Obtener un conflicto específico
-```bash
-curl http://localhost:8080/api/v1/conflicts/1
-```
-
-#### Crear un nuevo conflicto
-```bash
-curl -X POST http://localhost:8080/api/v1/conflicts \
+🔧 Opción 2: API REST (con curl o Postman)
+Ver todos los conflictos:
+bashcurl http://localhost:8080/api/v1/conflicts
+Ver conflictos activos:
+bashcurl http://localhost:8080/api/v1/conflicts?status=ACTIVE
+Crear un conflicto nuevo:
+bashcurl -X POST http://localhost:8080/api/v1/conflicts \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Nuevo Conflicto",
-    "startDate": "2024-01-01",
+    "name": "Mi Conflicto de Prueba",
+    "startDate": "2024-01-15",
     "status": "ACTIVE",
-    "description": "Descripción del conflicto",
+    "description": "Este es un conflicto de prueba",
     "countryIds": [1, 2]
   }'
-```
 
-#### Actualizar un conflicto
-```bash
-curl -X PUT http://localhost:8080/api/v1/conflicts/1 \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Conflicto Actualizado",
-    "startDate": "2024-01-01",
-    "status": "FROZEN",
-    "description": "Nueva descripción",
-    "countryIds": [1, 2, 3]
-  }'
-```
+🗃️ BASE DE DATOS
+El proyecto usa H2 (una base de datos en memoria) por defecto.
+Ver la base de datos:
 
-#### Eliminar un conflicto
-```bash
-curl -X DELETE http://localhost:8080/api/v1/conflicts/1
-```
+Ve a: http://localhost:8080/h2-console
+Configura así:
 
-#### Obtener conflictos de un país específico
-```bash
-curl http://localhost:8080/api/v1/countries/UKR/conflicts
-```
+JDBC URL: jdbc:h2:mem:conflictdb
+User Name: sa
+Password: (déjalo vacío)
 
-### Endpoints de Facciones
 
-#### Obtener todas las facciones
-```bash
-curl http://localhost:8080/api/v1/factions
-```
+Click "Connect"
+Verás las tablas: CONFLICT, FACTION, EVENT, COUNTRY
 
-#### Obtener una facción específica
-```bash
-curl http://localhost:8080/api/v1/factions/1
-```
+Datos iniciales:
+El proyecto viene con datos de ejemplo:
 
-#### Crear una nueva facción
-```bash
-curl -X POST http://localhost:8080/api/v1/factions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Nueva Facción",
-    "conflictId": 1,
-    "supporterIds": [1, 5]
-  }'
-```
+7 países (Ukraine, Russia, Israel, Palestine, USA, Syria, Turkey)
+3 conflictos (Guerra de Ucrania, Conflicto Israel-Palestina, Guerra Civil Siria)
+6 facciones
+6 eventos
 
-#### Actualizar una facción
-```bash
-curl -X PUT http://localhost:8080/api/v1/factions/1 \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Facción Actualizada",
-    "conflictId": 1,
-    "supporterIds": [2, 3]
-  }'
-```
 
-#### Eliminar una facción
-```bash
-curl -X DELETE http://localhost:8080/api/v1/factions/1
-```
+📊 ENDPOINTS DISPONIBLES
+CONFLICTOS
+GET    /api/v1/conflicts              → Lista todos
+GET    /api/v1/conflicts?status=ACTIVE → Filtra por estado
+GET    /api/v1/conflicts/1            → Obtiene uno específico
+POST   /api/v1/conflicts              → Crea uno nuevo
+PUT    /api/v1/conflicts/1            → Actualiza uno
+DELETE /api/v1/conflicts/1            → Elimina uno
+FACCIONES
+GET    /api/v1/factions               → Lista todas
+GET    /api/v1/factions/1             → Obtiene una específica
+POST   /api/v1/factions               → Crea una nueva
+PUT    /api/v1/factions/1             → Actualiza una
+DELETE /api/v1/factions/1             → Elimina una
+EVENTOS
+GET    /api/v1/events                 → Lista todos
+GET    /api/v1/events/1               → Obtiene uno específico
+POST   /api/v1/events                 → Crea uno nuevo
+PUT    /api/v1/events/1               → Actualiza uno
+DELETE /api/v1/events/1               → Elimina uno
+CONSULTAS AVANZADAS
+GET    /api/v1/countries/UKR/conflicts → Conflictos de Ucrania
 
-### Endpoints de Eventos
+🎯 ESTRUCTURA DEL PROYECTO
+conflict-tracker/
+│
+├── src/main/java/
+│   └── com/example/conflicttracker/
+│       ├── ConflictTrackerApplication.java  ← Arranca la app
+│       │
+│       ├── controller/                      ← Reciben peticiones HTTP
+│       │   ├── ConflictController.java      (API REST)
+│       │   ├── FactionController.java       (API REST)
+│       │   ├── EventController.java         (API REST)
+│       │   ├── CountryController.java       (API REST)
+│       │   └── WebController.java           (Página web)
+│       │
+│       ├── service/                         ← Lógica de negocio
+│       │   ├── ConflictService.java
+│       │   ├── FactionService.java
+│       │   └── EventService.java
+│       │
+│       ├── repository/                      ← Acceso a base de datos
+│       │   ├── ConflictRepository.java
+│       │   ├── FactionRepository.java
+│       │   ├── EventRepository.java
+│       │   └── CountryRepository.java
+│       │
+│       ├── model/                           ← Tablas de la BD
+│       │   ├── Conflict.java
+│       │   ├── Faction.java
+│       │   ├── Event.java
+│       │   ├── Country.java
+│       │   └── ConflictStatus.java
+│       │
+│       ├── dto/                             ← Objetos de transferencia
+│       │   └── (8 archivos)
+│       │
+│       └── mapper/                          ← Conversores
+│           └── (3 archivos)
+│
+├── src/main/resources/
+│   ├── templates/                           ← Páginas HTML
+│   │   ├── conflicts.html                   (Lista)
+│   │   └── conflict-form.html               (Formulario)
+│   ├── application.properties               ← Configuración
+│   └── data.sql                             ← Datos iniciales
+│
+├── pom.xml                                  ← Dependencias Maven
+└── README.md                                ← Esta documentación
 
-#### Obtener todos los eventos
-```bash
-curl http://localhost:8080/api/v1/events
-```
+🐛 SOLUCIÓN DE PROBLEMAS
+❌ Error: "Could not find or load main class"
+Solución:
+bashmvn clean install
+❌ Error: "Port 8080 already in use"
+Solución: Cambia el puerto en application.properties:
+propertiesserver.port=8081
+❌ Error: "Failed to configure a DataSource"
+Solución: Verifica que application.properties tenga:
+propertiesspring.datasource.url=jdbc:h2:mem:conflictdb
+❌ La página web no carga (404)
+Verifica: Que Thymeleaf esté en el pom.xml:
+xml<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
 
-#### Obtener un evento específico
-```bash
-curl http://localhost:8080/api/v1/events/1
-```
-
-#### Crear un nuevo evento
-```bash
-curl -X POST http://localhost:8080/api/v1/events \
-  -H "Content-Type: application/json" \
-  -d '{
-    "eventDate": "2024-02-15",
-    "location": "Ciudad, País",
-    "description": "Descripción del evento",
-    "conflictId": 1
-  }'
-```
-
-#### Actualizar un evento
-```bash
-curl -X PUT http://localhost:8080/api/v1/events/1 \
+📝 EJEMPLOS DE USO
+Ejemplo 1: Ver todos los conflictos activos
+Desde navegador:
+http://localhost:8080/api/v1/conflicts?status=ACTIVE
+Desde terminal:
+bashcurl http://localhost:8080/api/v1/conflicts?status=ACTIVE
+Ejemplo 2: Crear un evento
+bashcurl -X POST http://localhost:8080/api/v1/events \
   -H "Content-Type: application/json" \
   -d '{
     "eventDate": "2024-02-16",
-    "location": "Nueva ubicación",
-    "description": "Nueva descripción",
+    "location": "Madrid, España",
+    "description": "Cumbre de paz",
     "conflictId": 1
   }'
-```
+Ejemplo 3: Ver conflictos de un país
+bashcurl http://localhost:8080/api/v1/countries/UKR/conflicts
 
-#### Eliminar un evento
-```bash
-curl -X DELETE http://localhost:8080/api/v1/events/1
-```
+🎓 PARA ESTUDIANTES
+Este proyecto cumple con:
 
-## 🖥️ Frontend Web
+✅ Arquitectura por capas (Controller → Service → Repository)
+✅ DTOs para desacoplar API del modelo
+✅ Mappers para conversión Entity ↔ DTO
+✅ CRUD completo para todas las entidades
+✅ Frontend con Thymeleaf
+✅ Base de datos relacional (JPA)
+✅ Endpoints REST bien diseñados
 
-La aplicación incluye una interfaz web desarrollada con Thymeleaf:
 
-### Acceder al frontend
-```
-http://localhost:8080/web/conflicts
-```
+📞 ¿NECESITAS AYUDA?
 
-### Funcionalidades del frontend:
-- ✅ **Lista de conflictos**: Visualiza todos los conflictos en una tabla con sus detalles
-- ✅ **Crear conflicto**: Formulario para añadir nuevos conflictos
-- ✅ **Eliminar conflicto**: Elimina conflictos existentes
-- ✅ **Interfaz responsive**: Diseño adaptativo con Bootstrap 5
-- ✅ **Mensajes de feedback**: Alertas de éxito y error
+Revisa los logs en la consola donde ejecutaste la aplicación
+Accede a H2 para ver la base de datos
+Prueba primero la interfaz web (es más visual)
+Luego prueba la API con curl o Postman
 
-## 🗄️ Modelo de Datos
 
-### Entidades y Relaciones
+✅ CHECKLIST RÁPIDO
 
-- **Conflict** ↔ **Country**: ManyToMany (países donde ocurre el conflicto)
-- **Faction** → **Conflict**: ManyToOne (cada facción pertenece a un conflicto)
-- **Faction** ↔ **Country**: ManyToMany (países que apoyan la facción)
-- **Event** → **Conflict**: ManyToOne (cada evento pertenece a un conflicto)
+ Tengo Java 17 instalado
+ He descomprimido el proyecto
+ He abierto la carpeta en mi IDE
+ He ejecutado mvn clean install
+ He ejecutado la aplicación
+ Puedo acceder a http://localhost:8080/web/conflicts
+ Puedo acceder a http://localhost:8080/h2-console
+ Los endpoints de la API funcionan
 
-### Estados de Conflicto (Enum)
-- `ACTIVE`: Conflicto activo
-- `FROZEN`: Conflicto congelado
-- `ENDED`: Conflicto finalizado
+Si todos están marcados: ¡FUNCIONA! 🎉
 
-## 🔧 Configuración para PostgreSQL
-
-Para usar PostgreSQL en producción, modifica `application.properties`:
-
-```properties
-# Comentar la configuración de H2 y usar esta:
-spring.datasource.url=jdbc:postgresql://localhost:5432/conflictdb
-spring.datasource.username=postgres
-spring.datasource.password=tu_password
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
-spring.jpa.hibernate.ddl-auto=update
-```
-
-Crear la base de datos:
-```sql
-CREATE DATABASE conflictdb;
-```
-
-## 📊 Datos de Prueba
-
-La aplicación incluye un archivo `data.sql` con datos iniciales:
-- 7 países
-- 3 conflictos
-- 6 facciones
-- 6 eventos
-
-## 🧪 Testing con Postman
-
-Importa la siguiente colección en Postman para probar todos los endpoints:
-
-```json
-{
-  "info": {
-    "name": "Conflict Tracker API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "Conflicts",
-      "item": [
-        {
-          "name": "Get All Conflicts",
-          "request": {
-            "method": "GET",
-            "url": "http://localhost:8080/api/v1/conflicts"
-          }
-        },
-        {
-          "name": "Get Conflict by ID",
-          "request": {
-            "method": "GET",
-            "url": "http://localhost:8080/api/v1/conflicts/1"
-          }
-        }
-      ]
-    }
-  ]
-}
-```
-
-# Conflict Tracker API
------------------------
-`Conflict Tracker` es una API REST desarrollada con Spring Boot para la gestión estructurada de información sobre conflictos armados: conflictos, facciones, eventos y países involucrados. El objetivo del proyecto es proporcionar una base extensible y bien documentada para almacenar, consultar y administrar datos relacionados con conflictos a nivel nacional e internacional.
-
-Estado del proyecto
--------------------
-- Lenguaje: Java 17
-- Framework: Spring Boot 3.2
-- Gestión de dependencias: Maven
-
-Principales características
---------------------------
-- CRUD completo para `Conflict`, `Faction`, `Event` y `Country`.
-- Capas separadas (controller, service, repository) y uso de DTOs y mappers para aislar la capa de persistencia.
-- Configuración por defecto para `H2` (desarrollo) y soporte para `PostgreSQL` en producción.
-- Interfaz web mínima basada en Thymeleaf para administración básica.
-
-Estructura del proyecto
-----------------------
-Organización de código relevante (ruta base: `src/main/java`):
-
-- `controller/` — Controladores REST y páginas web.
-- `service/` — Lógica de negocio y validaciones.
-- `repository/` — Repositorios JPA para acceso a datos.
-- `model/` — Entidades JPA y enums.
-- `dto/` — Objetos de transferencia entre capas.
-- `mapper/` — Conversores entre entidades y DTOs.
-
-Requisitos
-----------
-- Java 17 o superior.
-- Maven 3.6+.
-- PostgreSQL (opcional, solo si se despliega en entorno productivo).
-
-Compilación y ejecución
------------------------
-1. Clonar el repositorio:
-
-```bash
-git clone <repositorio>
-cd <repositorio>
-```
-
-2. Construir el artefacto con Maven:
-
-```bash
-mvn clean package
-```
-
-3. Ejecutar la aplicación en modo desarrollo (usa H2 por defecto):
-
-```bash
-mvn spring-boot:run
-```
-
-La aplicación se expone por defecto en `http://localhost:8080`.
-
-Configuración de base de datos
-------------------------------
-Por defecto el proyecto viene configurado para usar H2 en memoria durante el desarrollo. Para usar PostgreSQL en producción, sustituya o extienda las propiedades de `application.properties` o `application.yaml` con la configuración correspondiente:
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/conflictdb
-spring.datasource.username=postgres
-spring.datasource.password=tu_password
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
-spring.jpa.hibernate.ddl-auto=update
-```
-
-Modelado de datos (resumen)
----------------------------
-- `Conflict` — Entidad principal. Relación ManyToMany con `Country`.
-- `Faction` — Pertenece a un `Conflict` (ManyToOne). Tiene relación ManyToMany con `Country` (países que apoyan).
-- `Event` — Pertenece a un `Conflict` (ManyToOne).
-- Enum `ConflictStatus` con valores representativos: `ACTIVE`, `FROZEN`, `ENDED`.
-
-Endpoints (resumen)
--------------------
-La API expone recursos REST bajo el prefijo `/api/v1/` siguiendo convenciones RESTful.
-
-Rutas principales:
-
-- `GET  /api/v1/conflicts` — Listar conflictos (soporta filtros por estado).
-- `GET  /api/v1/conflicts/{id}` — Obtener un conflicto por id.
-- `POST /api/v1/conflicts` — Crear un conflicto.
-- `PUT  /api/v1/conflicts/{id}` — Actualizar un conflicto.
-- `DELETE /api/v1/conflicts/{id}` — Eliminar un conflicto.
-
-- `GET/POST/PUT/DELETE` para `factions` y `events` con rutas análogas.
-
-Ejemplo de uso (crear conflicto) — curl:
-
-```bash
-curl -X POST http://localhost:8080/api/v1/conflicts \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Nombre del conflicto",
-    "startDate": "2024-01-01",
-    "status": "ACTIVE",
-    "description": "Breve descripción",
-    "countryIds": [1, 2]
-  }'
-```
-
-Datos iniciales y pruebas
-------------------------
-El proyecto puede incluir un archivo `data.sql` o `import.sql` con datos de ejemplo para poblar la base en tiempo de arranque. Para pruebas manuales, puede utilizarse Postman, curl o la consola H2 (`/h2-console`) en desarrollo.
-
-Testing
--------
-El proyecto incorpora dependencias para pruebas (`spring-boot-starter-test`). Añada pruebas unitarias e integradas en `src/test/java` y ejecútelas con:
-
-```bash
-mvn test
-```
-
-Buenas prácticas y despliegue
-----------------------------
-- Parametrizar credenciales y URLs a través de variables de entorno o perfiles de Spring (`application-dev.properties`, `application-prod.properties`).
-- Evitar `spring.jpa.hibernate.ddl-auto=update` en producción; preferir migraciones controladas (Flyway o Liquibase).
-- Habilitar logs y monitoreo para entornos productivos.
-
-Contribuciones
---------------
-Las contribuciones son bienvenidas. Para colaborar:
-
-1. Abra un issue describiendo la mejora o corrección.
-2. Cree una rama con un nombre descriptivo.
-3. Envíe un pull request con una descripción clara y pruebas si procede.
-
-Autor y licencia
------------------
-Proyecto desarrollado como ejercicio académico. Consulte el repositorio para detalles adicionales sobre autoría y licencia.
-
-Contacto
--------
-Para consultas técnicas o propuestas de colaboración, abra un issue en el repositorio o contacte al autor listado en el control de versiones.
+¡Buena suerte con tu proyecto! 🚀
