@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Nuevo Conflicto - Conflict Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 40px;
+            margin-top: 20px;
+            max-width: 800px;
+        }
+        h1 {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102,126,234,0.25);
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 40px;
+            font-weight: 600;
+            width: 100%;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+        .btn-cancel {
+            background-color: #6c757d;
+            border: none;
+            color: white;
+            padding: 12px 40px;
+            font-weight: 600;
+            width: 100%;
+        }
+        .btn-cancel:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Crear Nuevo Conflicto</h1>
+        
+        <form th:action="@{/web/conflicts}" th:object="${conflict}" method="post">
+            <!-- Nombre -->
+            <div class="mb-3">
+                <label for="name" class="form-label">Nombre del Conflicto *</label>
+                <input type="text" 
+                       class="form-control" 
+                       id="name" 
+                       th:field="*{name}"
+                       placeholder="Ej: Guerra de Ucrania"
+                       required>
+                <div class="form-text">Introduce el nombre del conflicto</div>
+            </div>
+
+            <!-- Fecha de inicio -->
+            <div class="mb-3">
+                <label for="startDate" class="form-label">Fecha de Inicio *</label>
+                <input type="date" 
+                       class="form-control" 
+                       id="startDate" 
+                       th:field="*{startDate}"
+                       required>
+                <div class="form-text">Selecciona la fecha de inicio del conflicto</div>
+            </div>
+
+            <!-- Estado -->
+            <div class="mb-3">
+                <label for="status" class="form-label">Estado *</label>
+                <select class="form-select" 
+                        id="status" 
+                        th:field="*{status}"
+                        required>
+                    <option value="">-- Selecciona un estado --</option>
+                    <option th:each="status : ${statuses}" 
+                            th:value="${status}" 
+                            th:text="${status}">
+                        ACTIVE
+                    </option>
+                </select>
+                <div class="form-text">Estado actual del conflicto</div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="mb-4">
+                <label for="description" class="form-label">Descripción *</label>
+                <textarea class="form-control" 
+                          id="description" 
+                          th:field="*{description}"
+                          rows="5"
+                          placeholder="Describe el conflicto, sus causas y contexto..."
+                          required></textarea>
+                <div class="form-text">Proporciona una descripción detallada del conflicto</div>
+            </div>
+
+            <!-- Nota sobre países -->
+            <div class="alert alert-info mb-4">
+                <strong>ℹ️ Nota:</strong> Los países involucrados se pueden añadir posteriormente mediante la API REST.
+            </div>
+
+            <!-- Botones -->
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <button type="submit" class="btn btn-submit">
+                        ✅ Crear Conflicto
+                    </button>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <a th:href="@{/web/conflicts}" class="btn btn-cancel">
+                        ❌ Cancelar
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
