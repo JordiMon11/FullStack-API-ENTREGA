@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conflict Tracker - Lista de Conflictos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        h1 {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        .btn-add {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            font-weight: 600;
+        }
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f8f9ff;
+        }
+        .badge-active {
+            background-color: #28a745;
+        }
+        .badge-frozen {
+            background-color: #17a2b8;
+        }
+        .badge-ended {
+            background-color: #6c757d;
+        }
+        .alert {
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>🌍 Conflict Tracker</h1>
+            <a th:href="@{/web/conflicts/new}" class="btn btn-add">
+                ➕ Nuevo Conflicto
+            </a>
+        </div>
+
+        <!-- Mensajes de éxito/error -->
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>✅ Éxito!</strong> <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>❌ Error!</strong> <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <!-- Tabla de conflictos -->
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Fecha de Inicio</th>
+                        <th>Estado</th>
+                        <th>Descripción</th>
+                        <th>Países Involucrados</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${#lists.isEmpty(conflicts)}">
+                        <td colspan="7" class="text-center text-muted">
+                            No hay conflictos registrados
+                        </td>
+                    </tr>
+                    <tr th:each="conflict : ${conflicts}">
+                        <td th:text="${conflict.id}">1</td>
+                        <td>
+                            <strong th:text="${conflict.name}">Conflict Name</strong>
+                        </td>
+                        <td th:text="${#temporals.format(conflict.startDate, 'dd/MM/yyyy')}">
+                            24/02/2022
+                        </td>
+                        <td>
+                            <span th:class="${'badge ' + 
+                                (conflict.status.name() == 'ACTIVE' ? 'badge-active' : 
+                                 conflict.status.name() == 'FROZEN' ? 'badge-frozen' : 
+                                 'badge-ended')}"
+                                  th:text="${conflict.status}">
+                                ACTIVE
+                            </span>
+                        </td>
+                        <td>
+                            <span th:text="${#strings.abbreviate(conflict.description, 60)}">
+                                Description...
+                            </span>
+                        </td>
+                        <td>
+                            <span th:each="country, iterStat : ${conflict.countries}">
+                                <span th:text="${country.code}">UKR</span>
+                                <span th:if="${!iterStat.last}">, </span>
+                            </span>
+                        </td>
+                        <td>
+                            <a th:href="@{/web/conflicts/{id}/delete(id=${conflict.id})}" 
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('¿Estás seguro de eliminar este conflicto?')">
+                                🗑️ Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-4 text-center text-muted">
+            <p>Total de conflictos: <strong th:text="${#lists.size(conflicts)}">0</strong></p>
+            <small>Conflict Tracker API - Programación Fullstack</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
